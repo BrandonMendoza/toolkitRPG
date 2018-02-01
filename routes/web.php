@@ -16,6 +16,8 @@ Route::get('/', 'dashboardController@initDashboard');
 Route::get('/heros', 'HerosController@show');
 Route::get('/heros/create', 'HerosController@createView');
 
-Route::post('/heros/insert','HerosController@insertHero');
+Route::post('/heros/insert','HerosController@submitHeroForm')->name('insertHero');
 
-Route::post('/heros/racesFilter/','HerosController@racesFilter');
+Route::get('/racesFilter','HerosController@racesFilter');
+
+Route::get('/classFilter','HerosController@classFilter');
