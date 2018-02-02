@@ -14,7 +14,9 @@ use DB;
 class HerosController extends Controller
 {
     function show(){
-    	return view('heros.show');
+        $data['heros'] = Hero::all();
+        
+    	return view('heros.show',$data);
     }
 
     function createView(){
@@ -24,6 +26,81 @@ class HerosController extends Controller
 
     	return view('heros.create')->with(['races' => $races])->with(['weapons' => $weapons])->with(['classes' => $classes]);
         //return view('heros.create',compact($races));
+    }
+
+    function getHero($id){
+        $data['heros'] = Hero::all()->find($id);
+        $races = Race::where('category','hero')->pluck('name','id');
+        return view('heros.edit',$data)->with(['races' => $races]);
+    }
+
+    public function heroDestroy($id){
+        echo ($id);
+        $hero=Hero::find($id);
+        $hero->destroy($id);
+        //return view('heros.show');
+        $msg = 'Heroe Eliminado';
+        return redirect()->back()->withSucces($msg);
+    }
+
+    function updateHero(Request $request,$id){
+
+        if($request->races == 2 or $request->races == 5 or $request->races == 7){
+            $this->validate($request,[
+                'nameIn' => 'required',
+                'strength' => 'required',
+                'intelligence' => 'required',
+                'dexterity' => 'required',
+                'races' => 'required|not_in:0',
+                'classes' => 'required|not_in:0',
+                'weapons' => 'required|not_in:0'
+            ]);
+        }else{
+            $this->validate($request,[
+                'nameIn' => 'required',
+                'lnameIn' => 'required',
+                'strength' => 'required',
+                'intelligence' => 'required',
+                'dexterity' => 'required',
+                'races' => 'required|not_in:0',
+                'classes' => 'required|not_in:0',
+                'weapons' => 'required|not_in:0'
+            ]);
+        }
+
+
+        if($request->races == 2 or $request->races == 5 or $request->races == 7){
+            $hero = [
+                'name' => $request->nameIn,
+                'last_name'=> ' ',
+                'strength' => $request->strength,
+                'intelligence' => $request->intelligence,
+                'dexterity' => $request->dexterity,
+                'race_id' => $request->races,
+                'class_id' => $request->classes,
+                'weapon_id' => $request->weapons,
+                'level' => $request->level
+            ];
+        }else{
+
+            $hero = [
+                'name' => $request->nameIn,
+                'last_name' => $request->lnameIn,
+                'strength' => $request->strength,
+                'intelligence' => $request->intelligence,
+                'dexterity' => $request->dexterity,
+                'race_id' => $request->races,
+                'class_id' => $request->classes,
+                'weapon_id' => $request->weapons,
+                'level' => $request->level
+            ];   
+        }
+
+        $update = Hero::find($id)->update($hero);
+
+        $data['heros'] = Hero::all();
+        
+        return view('heros.show',$data);
     }
 
     function submitHeroForm(Request $request){
@@ -66,6 +143,7 @@ class HerosController extends Controller
         if($request->races == 2 or $request->races == 5 or $request->races == 7){
             $hero = [
                 'name' => $request->nameIn,
+                'last_name'=> ' ',
                 'strength' => $request->strength,
                 'intelligence' => $request->intelligence,
                 'dexterity' => $request->dexterity,
@@ -86,9 +164,7 @@ class HerosController extends Controller
                 'class_id' => $request->classes,
                 'weapon_id' => $request->weapons,
                 'level' => $request->level
-            ];
-
-            
+            ];   
         }
         $save = Hero::insert($hero);
         return redirect('heros');

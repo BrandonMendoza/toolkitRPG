@@ -16,8 +16,15 @@ Route::get('/', 'dashboardController@initDashboard');
 Route::get('/heros', 'HerosController@show');
 Route::get('/heros/create', 'HerosController@createView');
 
+Route::get('/heros/{id}/edit','HerosController@getHero');//->name('editHero');
+Route::post('/heros/{id}/update','HerosController@updateHero');
+Route::get('/heros/{id}/destroy','HerosController@heroDestroy');
+
+
 Route::post('/heros/insert','HerosController@submitHeroForm')->name('insertHero');
 
 Route::get('/racesFilter','HerosController@racesFilter');
-
 Route::get('/classFilter','HerosController@classFilter');
+
+
+

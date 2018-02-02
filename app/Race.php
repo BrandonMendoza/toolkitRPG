@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Race extends Model
 {
+
+
 	protected $table = 'races'; 
 
 	protected $fillable = [
@@ -13,4 +15,6 @@ class Race extends Model
     	'category',
     	'name'
 	];
+
+	
 }
