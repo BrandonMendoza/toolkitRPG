@@ -7,6 +7,8 @@ use App\Race;
 use App\Weapon;
 use App\Chuman;
 use App\Hero;
+use App\Rname;
+use App\Rlast;
 use Illuminate\Http\Request;
 use DB;
 
@@ -104,7 +106,9 @@ class HerosController extends Controller
     }
 
     function submitHeroForm(Request $request){
+
         if($request->submitbtn == 'create'){
+
             if($request->races == 2 or $request->races == 5 or $request->races == 7){
                 $this->validate($request,[
                     'nameIn' => 'required',
@@ -172,21 +176,34 @@ class HerosController extends Controller
     }
 
     public function randomCreate(){
-        $hero = Hero::find(4);
-        $name['name']=$hero;
+
+        $ran =rand(1,16);
+        $searchedName = Rname::find($ran);
+        $name['name']=$searchedName;
         
         
         $ran = $this->randomNumber('race',0);
-        $SearchRace = Race::find($ran);
-        $race['race']=$SearchRace;
+        $searchedRace = Race::find($ran);
+        $race['race']=$searchedRace;
+        $ranRace = $ran;
+
+        
 
         $ran =$this->randomNumber('class',$race['race']->id);
-        $SearchClass = Chuman::find($ran);
-        $chuman['chuman']=$SearchClass;
+        $searchedClass = Chuman::find($ran);
+        $chuman['chuman']=$searchedClass;
 
         $ran =$this->randomNumber('weapon',$chuman['chuman']->id);
-        $SearchWeapon = Weapon::find($ran);
-        $weapon['weapon']=$SearchWeapon;
+        $searchedWeapon = Weapon::find($ran);
+        $weapon['weapon']=$searchedWeapon;
+
+        if($ranRace !=5 and $ranRace != 7 and $ranRace !=2){ // 5 7 2
+            $ran =rand(1,16);
+            $searchedLast = Rlast::find($ran);
+            $last['last']=$searchedLast;
+
+            return view('heros.random', $name)->with($race)->with($chuman)->with($weapon)->with($last);
+        }
 
 
         return view('heros.random', $name)->with($race)->with($chuman)->with($weapon);
@@ -198,7 +215,7 @@ class HerosController extends Controller
         if($table == 'race'){
            for($i=1;$i>0;$i++){
             $ran =rand(1,31);
-            if($ran<7 or $ran>29)
+            if($ran<=7 or $ran>29)
                 break;
             } 
         }else{
