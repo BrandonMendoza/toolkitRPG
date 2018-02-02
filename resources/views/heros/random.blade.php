@@ -10,40 +10,25 @@
 
 		<div class="form-group row" >
 			<label class="col-2 col-form-label">Race: </label>
-		    <select class="form-control" style="width: 200px" id="races" name="races">
+		    <select class="form-control" style="width: 200px" id="races" name="races" readonly disabled="true">
 
-		        <option value="0" disabled="true" selected="true">-Select-</option>
-		        @foreach($races as $idr => $race )
-					<option value="{{ $idr }}">{{ $race }}</option>
-				@endforeach
+		        <option value="{{ isset($race) ? $race->id : '' }}" disabled="true" selected="true">{{ isset($race) ? $race->name : '' }}</option>
+
 
 		    </select>
-		    @if($errors->any())
-		    	@foreach($errors->get('races') as $error)
-					<div>{{ $error }}</div>
-		    	@endforeach
-		    @endif
 
 		    <label class="col-2 col-form-label">Class: </label>
-		    <select class="form-control" style="width: 200px" id="classes" name="classes">
-		        <option value="0" disabled="true" selected="true">-Select-</option>
+		    <select class="form-control" style="width: 200px" id="classes" name="classes" disabled="true">
+		        <option value="{{ isset($chuman) ? $chuman->id : '' }}" disabled="true" selected="true">{{ isset($chuman) ? $chuman->name : '' }}</option>
 		    </select>
-			@if($errors->any())
-		    	@foreach($errors->get('classes') as $error)
-					<div>{{ $error }}</div>
-		    	@endforeach
-		    @endif
+
 
 
 		    <label class="col-2 col-form-label">Weapon: </label>
-		    <select class="form-control" style="width: 200px" id="weapons" name="weapons">
-		        <option value="0" disabled="true" selected="true">-Select-</option>
+		    <select class="form-control" style="width: 200px" id="weapons" name="weapons" readonly>
+		        <option value="{{ isset($weapon) ? $weapon->id : '' }}" disabled="true" selected="true">{{ isset($weapon) ? $weapon->name : '' }}</option>
 		    </select>
-		    @if($errors->any())
-		    	@foreach($errors->get('weapons') as $error)
-					<div>{{ $error }}</div>
-		    	@endforeach
-		    @endif
+
 
 	    </div>
 
@@ -51,24 +36,16 @@
 		<div class="form-group row">
 			<div class="col-xs-2">
 			    <label class="col-2 col-form-label">Name:</label>
-			    <input id="nameIn" name="nameIn" class="form-control" type="text" placeholder="name" disabled="true" onkeydown="mirroredLastName()">
-			    @if($errors->any())
-			    	@foreach($errors->get('nameIn') as $error)
-						<div>{{ $error }}</div>
-			    	@endforeach
-			    @endif
+			    <input id="nameIn" name="nameIn" class="form-control" type="text" placeholder="name" disabled="true" onkeydown="mirroredLastName()" value="{{ isset($name) ? $name->name : '' }}" readonly>
+
 
 
 			</div>
 
 			<div class="col-xs-2">
 			    <label class="col-2 col-form-label">Last Name:</label>
-			    <input id="lnameIn" name="lnameIn" class="form-control" type="text" placeholder="Last name" disabled="true" value="">
-			    @if($errors->any())
-			    	@foreach($errors->get('lnameIn') as $error)
-						<div>{{ $error }}</div>
-			    	@endforeach
-			    @endif
+			    <input id="lnameIn" name="lnameIn" class="form-control" type="text" placeholder="Last name" disabled="true" value="" readonly>
+
 		    </div>
 	    </div>
 
@@ -76,43 +53,28 @@
 		<div class="form-group row">
 			<div class="form-inline">
 			    <label class="col-2 col-form-label">Strength:</label>
-			    <input class="form-control" name="strength" id="strength" type="text" readonly>
-			    <button class="btn btn-light" id="roll1" onclick="rollRandom(1)">Roll</button>
+			    <input class="form-control" name="strength" id="strength" type="text" value=" " readonly>
 			    <label id="label1"></label>
 
-			    @if($errors->any())
-			    	@foreach($errors->get('strength') as $error)
-						<div>{{ $error }}</div>
-			    	@endforeach
-			    @endif
+
 		    </div>
 		</div>
 
 		<div class="form-group row">
 			<div class="form-inline">
 			    <label class="col-2 col-form-label">Intelligence:</label>
-			    <input class="form-control" name="intelligence" id="intelligence" type="text"  readonly >
-			    <button class="btn btn-light" id="roll2" onclick="rollRandom(2)">Roll</button>
+			    <input class="form-control" name="intelligence" id="intelligence" type="text" value=" " readonly>
 			    <label id="label2"></label>
-				@if($errors->any())
-			    	@foreach($errors->get('intelligence') as $error)
-						<div>{{ $error }}</div>
-			    	@endforeach
-			    @endif
+
 		    </div>
 		</div>
 
 		<div class="form-group row">
 			<div class="form-inline">
 			    <label class="col-2 col-form-label">Dexterity:</label>
-			    <input class="form-control" name="dexterity" id="dexterity" type="text"  readonly>
-			    <button class="btn btn-light" id="roll3" onclick="rollRandom(3)">Roll</button>
+			    <input class="form-control" name="dexterity" id="dexterity" type="text" value=" " readonly>
 			    <label id="label3"></label>
-			    @if($errors->any())
-			    	@foreach($errors->get('dexterity') as $error)
-						<div class="">{{ $error }}</div>
-			    	@endforeach
-			    @endif
+
 		    </div>
 
 	    </div>
@@ -126,9 +88,6 @@
 		
 		<div class="form-group row">
 		    <button  type="submit" class="btn btn-light" name="submitbtn" value="create">Create</button>
-
-		    <button type="submit" class="btn btn-light" name="submitbtn" value="randomCreate">Random Create</button>
-
 		    <button class="btn btn-light">Discard</button>
 	    </div>
 
@@ -145,7 +104,7 @@
 
 
 <script type="text/javascript">
-	console.log(getDifference("bran","brand"))
+
 	function getDifference(a, b)
 	{
 		var i = 0;
@@ -222,16 +181,13 @@
 			if(roll==1){
 				document.getElementById("strength").value = total;
 				document.getElementById("label1").innerHTML = result;
-				document.getElementById("roll1").disabled = true; 
 			}else{
 				if (roll==2) {
 					document.getElementById("intelligence").value = total;
 					document.getElementById("label2").innerHTML = result;
-					document.getElementById("roll2").disabled = true;
 				}else{
 					document.getElementById("dexterity").value = total;
 					document.getElementById("label3").innerHTML = result;
-					document.getElementById("roll3").disabled = true;
 				}
 			}
 
@@ -243,7 +199,9 @@
 
 
 	$(document).ready(function(){
-
+		rollRandom(1);
+		rollRandom(2);
+		rollRandom(3);
 
 
 		$(document).on('change','#races', function () {

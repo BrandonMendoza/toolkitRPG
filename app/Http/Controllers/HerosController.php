@@ -104,34 +104,33 @@ class HerosController extends Controller
     }
 
     function submitHeroForm(Request $request){
-        if($request->races == 2 or $request->races == 5 or $request->races == 7){
-            $this->validate($request,[
-                'nameIn' => 'required',
-                'strength' => 'required',
-                'intelligence' => 'required',
-                'dexterity' => 'required',
-                'races' => 'required|not_in:0',
-                'classes' => 'required|not_in:0',
-                'weapons' => 'required|not_in:0'
-            ]);
-        }else{
-            $this->validate($request,[
-                'nameIn' => 'required',
-                'lnameIn' => 'required',
-                'strength' => 'required',
-                'intelligence' => 'required',
-                'dexterity' => 'required',
-                'races' => 'required|not_in:0',
-                'classes' => 'required|not_in:0',
-                'weapons' => 'required|not_in:0'
-            ]);
-        }
-
-        
-
         if($request->submitbtn == 'create'){
-           return $this->insertHero($request);
+            if($request->races == 2 or $request->races == 5 or $request->races == 7){
+                $this->validate($request,[
+                    'nameIn' => 'required',
+                    'strength' => 'required',
+                    'intelligence' => 'required',
+                    'dexterity' => 'required',
+                    'races' => 'required|not_in:0',
+                    'classes' => 'required|not_in:0',
+                    'weapons' => 'required|not_in:0'
+                ]);
+            }else{
+                $this->validate($request,[
+                    'nameIn' => 'required',
+                    'lnameIn' => 'required',
+                    'strength' => 'required',
+                    'intelligence' => 'required',
+                    'dexterity' => 'required',
+                    'races' => 'required|not_in:0',
+                    'classes' => 'required|not_in:0',
+                    'weapons' => 'required|not_in:0'
+                ]);
+            }
+
+            return $this->insertHero($request);
         }else{
+
             if($request->submitbtn == 'randomCreate'){
                 return $this->randomCreate();
             }
@@ -140,6 +139,8 @@ class HerosController extends Controller
 
 
     public function insertHero(Request $request){
+        
+
         if($request->races == 2 or $request->races == 5 or $request->races == 7){
             $hero = [
                 'name' => $request->nameIn,
@@ -171,8 +172,161 @@ class HerosController extends Controller
     }
 
     public function randomCreate(){
+        $hero = Hero::find(4);
+        $name['name']=$hero;
+        
+        
+        $ran = $this->randomNumber('race',0);
+        $SearchRace = Race::find($ran);
+        $race['race']=$SearchRace;
 
-        return redirect('herosdd');
+        $ran =$this->randomNumber('class',$race['race']->id);
+        $SearchClass = Chuman::find($ran);
+        $chuman['chuman']=$SearchClass;
+
+        $ran =$this->randomNumber('weapon',$chuman['chuman']->id);
+        $SearchWeapon = Weapon::find($ran);
+        $weapon['weapon']=$SearchWeapon;
+
+
+        return view('heros.random', $name)->with($race)->with($chuman)->with($weapon);
+    }
+
+    public function randomNumber($table,$type){
+        $ran = 8;
+
+        if($table == 'race'){
+           for($i=1;$i>0;$i++){
+            $ran =rand(1,31);
+            if($ran<7 or $ran>29)
+                break;
+            } 
+        }else{
+            if($table == 'class'){
+                if($type == 1){    //GETTING A CLASS FOR HUMAN
+                    $ran =rand(1,7);
+                }else{
+
+                    if($type == 2){ //GETTING A CLASS FOR ELF
+                        for($i=1;$i>0;$i++){
+                        $ran =rand(1,7);
+                        if($ran!=6 and $ran!=1)
+                            break;
+                        }
+                    }else{
+
+                        if($type == 3){ //GETTING A CLASS FOR ELF
+                            for($i=1;$i>0;$i++){
+                            $ran =rand(1,7);
+                            if($ran!=3 and $ran!=1)
+                                break;
+                            }
+                        }else{
+
+                            if($type == 4){ //GETTING A CLASS FOR ELF
+                                for($i=1;$i>0;$i++){
+                                $ran =rand(1,7);
+                                if($ran!=2 and $ran!=4 and $ran!=1)
+                                    break;
+                                }
+                            }else{
+                                if($type == 5){ //GETTING A CLASS FOR ELF
+                                    for($i=1;$i>0;$i++){
+                                    $ran =rand(1,7);
+                                    if($ran!=5 and $ran!=4 and $ran!=1)
+                                        break;
+                                    }
+                                }else{
+                                    if($type == 6){ //GETTING A CLASS FOR ELF
+                                        for($i=1;$i>0;$i++){
+                                        $ran =rand(1,7);
+                                        if($ran!=1)
+                                            break;
+                                        }
+                                    }else{
+                                        if($type == 7){ //GETTING A CLASS FOR ELF
+                                            for($i=1;$i>0;$i++){
+                                            $ran =rand(1,7);
+                                            if($ran!=1 and $ran!=5)
+                                                break;
+                                            }
+                                        }else{
+                                            if($type == 30){ //GETTING A CLASS FOR ELF
+                                                for($i=1;$i>0;$i++){
+                                                $ran =rand(1,7);
+                                                if($ran!=3 and $ran!=1)
+                                                    break;
+                                                }
+                                            }else{
+                                                if($type == 31){ //GETTING A CLASS FOR ELF
+                                                    for($i=1;$i>0;$i++){
+                                                        $ran =rand(1,7);
+                                                        if($ran!=3)
+                                                            break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if($table == 'weapon'){
+                if($type == 1){
+                    $ran=rand(1,2);
+                }else{
+                    if($type == 2){
+                        for($i=1;$i>0;$i++){
+                            $ran =rand(1,5);
+                            if($ran==4 or $ran == 2)
+                                break;
+                        }
+                    }else{
+                        if($type == 3){
+                            for($i=1;$i>0;$i++){
+                                $ran =rand(1,5);
+                                if($ran!=4 or $ran != 5)
+                                    break;
+                            }
+                        }else{
+                            if($type == 4){
+                                for($i=1;$i>0;$i++){
+                                    $ran =rand(1,5);
+                                    if($ran==5 or $ran == 2)
+                                        break;
+                                }
+                            }else{
+                                if($type == 5){
+                                    for($i=1;$i>0;$i++){
+                                        $ran =rand(1,5);
+                                        if($ran==5 or $ran == 2)
+                                            break;
+                                    }
+                                }else{
+                                    if($type == 6){
+                                        $ran =rand(1,5);
+                                    }else{
+                                        if($type == 7){
+                                            for($i=1;$i>0;$i++){
+                                                $ran =rand(1,5);
+                                                if($ran!=3)
+                                                    break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+        return $ran;
     }
 
     public function racesFilter(Request $request){
@@ -212,7 +366,14 @@ class HerosController extends Controller
                                         $res = Chuman::all();
                                         $data = $res->except("1")->except("6"); //NO PALADIN NO WARRIORS
                                         //$data = $res->except("3");
+                                    }else{
+                                        if($request->id == 6){ //HALFLINGS
+                                            $res = Chuman::all();
+                                            $data = $res->except("1"); //NO PALADIN
+                                            //$data = $res->except("3");
+                                        }
                                     }
+
                                 }
                             }   
                         }
