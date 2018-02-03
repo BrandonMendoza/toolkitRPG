@@ -3,8 +3,9 @@
 
 
 
-	<h1>Hero's</h1>
-	<a href="/heros/create" class="btn btn-default">Create hero</a>
+	<h1>Monster's</h1>
+	<a href="/monsters/create" class="btn btn-default">Create Monster</a>
+	
     
     @if(Session::has('success'))
 		<h3>{{ Session::get('success') }}</h3>
@@ -21,41 +22,34 @@
     						
 							<th>Id</th>
 							<th>Name</th>
-							<th>Last Name</th>
 							<th>Level</th>
 							<th>Race</th>
-							<th>Class</th>
-							<th>Weapon</th>
 							<th>Strength</th>
 							<th>Intelligence</th>
 							<th>Dexterity</th>
+							<th>Abillities</th>
 
     					</tr>
 
     				</thead>
 
     				<tbody>
-    					@foreach($heros as $id =>$hero)
+    					@foreach($monsters as $id =>$monster)
 							<tr>
 								<td>{{ ($id+1) }}</td>
-								<td>{{ $hero->name }}</td>
-								<td>{{ $hero->last_name }}</td>
-								<td>{{ $hero->level }}</td>
-								<td>{{ $hero->race->name }}</td>
-								<td>{{ $hero->class->name }}</td>
-								<td>{{ $hero->weapon->name }}</td>
-								<td>{{ $hero->strength }}</td>
-								<td>{{ $hero->intelligence }}</td>
-								<td>{{ $hero->dexterity }}</td>
+								<td>{{ $monster->name }}</td>
+								<td>{{ $monster->level }}</td>
+								<td>{{ $monster->race->name }}</td>
+								<td>{{ $monster->strength }}</td>
+								<td>{{ $monster->intelligence }}</td>
+								<td>{{ $monster->dexterity }}</td>
+								<td>{{ $monster->abillities }}</td>
 								<td>
-									{{ csrf_field() }}
-									<a href="{{URL('heros/'.$hero->id.'/edit')}}" class="btn btn-xs btn-info">Edit</a>
 								<td>
-									<a href="{{URL('heros/'.$hero->id.'/destroy')}}" class="btn btn-xs btn-danger">Delete</a>
+									<a href="{{URL('monsters/'.$monster->id.'/destroy')}}" class="btn btn-xs btn-danger">Delete</a>
 								</td>
 
 							</tr>
-
 
     					@endforeach
 
